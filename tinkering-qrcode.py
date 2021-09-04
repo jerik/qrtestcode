@@ -4,7 +4,6 @@ import logging, sys, pdb
 logfile = sys.argv[0].replace('.py', '.log')
 logging.basicConfig(filename=logfile, level=logging.DEBUG)
 import cv2
-import sys
 
 
 def hey(ho):
@@ -25,14 +24,12 @@ def readqr(filename='test-qrcode.png'):
         hey('There is an error somewhere')
 
 
+# https://stackoverflow.com/a/52415477/1933185
 def extract_images(filename='Dokument1.pdf'):
-    hey('here i am extracting')
-    with open(filename, 'rb') as file
-    file.seek(0)
-    pdf = file.read()
+    hey('here i am extracting %s' % filename)
 
 
 if __name__ == '__main__':
     hey('*'*20)
     # readqr()
-    extract_images('foo')
+    extract_images()
