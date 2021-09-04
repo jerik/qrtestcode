@@ -4,6 +4,7 @@ import logging, sys, pdb
 logfile = sys.argv[0].replace('.py', '.log')
 logging.basicConfig(filename=logfile, level=logging.DEBUG)
 import cv2
+import fitz
 
 
 def hey(ho):
@@ -24,12 +25,29 @@ def readqr(filename='test-qrcode.png'):
         hey('There is an error somewhere')
 
 
-# https://stackoverflow.com/a/52415477/1933185
-def extract_images(filename='Dokument1.pdf'):
-    hey('here i am extracting %s' % filename)
+# https://stackoverflow.com/a/47877930/1933185
+def extract_images(arr_images, filename='Dokument1.pdf'):
+    #hey('here i am extracting %s' % filename)
+    doc = fitz.open(filename)
+    for i in range(len(doc)):
+        for img in doc.getPageImageList(i):
+            xref = img[0]
+            #hey("i: %s, xref %s" % (i, xref))
+            pix = fitz.Pixmap(doc, xref)
+            if pix.n < 5:  # thi sis GRAY orRGB
+                pix.writePNG("p%s-%s.png" % (i, xref))
+            else:
+                pix1 = fitz.Pixmap(fitz.csRGB, pix)
+                pix1.writePNG("p%s-%s.png" % (i, xref))
+                pix1 = None
+            arr_images.append("p%s-%s.png" % (i, xref))
+            pix = None
 
 
 if __name__ == '__main__':
     hey('*'*20)
     # readqr()
-    extract_images()
+    pngs = []
+    extract_images(pngs, 'Dokument1.pdf')
+    readqr(pngs[0])
+    hey("It's working :)")
