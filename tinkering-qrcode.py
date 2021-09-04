@@ -4,6 +4,7 @@ import logging, sys, pdb
 logfile = sys.argv[0].replace('.py', '.log')
 logging.basicConfig(filename=logfile, level=logging.DEBUG)
 import cv2
+import sys
 
 
 def hey(ho):
@@ -14,13 +15,24 @@ def show(pattern):
     print(f'Now I show you my: {pattern}')
 
 
-if __name__ == '__main__':
-    hey('*'*20)
-    filename = 'test-qrcode.png'
+def readqr(filename='test-qrcode.png'):
     image = cv2.imread(filename)
     detector = cv2.QRCodeDetector()
     data, vertices_array, ninary_qrcode = detector.detectAndDecode(image)
     if vertices_array is not None:
-        print('QRCode data:', data)
+        hey('QRCode data: %s' % data)
     else:
-        print('There is an error somewhere')
+        hey('There is an error somewhere')
+
+
+def extract_images(filename='Dokument1.pdf'):
+    hey('here i am extracting')
+    with open(filename, 'rb') as file
+    file.seek(0)
+    pdf = file.read()
+
+
+if __name__ == '__main__':
+    hey('*'*20)
+    # readqr()
+    extract_images('foo')
